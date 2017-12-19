@@ -40,10 +40,67 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           background-color: var(--paper-blue-900);
           color: #fff;
         }
+
+        paper-tabs {
+          background-color: #000;
+          color: #fff;
+          height: 60px;
+          position: fixed;
+          width: 100%;
+          top: 0;
+          z-index: 150;
+          --paper-tabs-selection-bar-color: #E1143C;
+          --paper-tabs-selection-bar: {
+            height: 7px;
+            z-index: 300;
+          }
+          ;
+        }
+
+        paper-tabs paper-tab {
+          font-family: 'Myriad Pro bold condensed', sans-serif;
+          font-size: 17px;
+          font-weight: normal;
+        }
+
+        paper-tabs paper-tab:first-child,
+        paper-tabs paper-tab:first-of-type{
+          margin-left: 5%;
+        }
+
+        paper-tabs {
+          overflow: visible;
+        }
       </style>
     </custom-style>
 
     <div id="container" class="vertical-section-container centered">
+
+      <h3>Subtabs</h3>
+      <demo-snippet>
+        <template>
+          <paper-tabs selected="{{page}}" attr-for-selected="name" scrollable hide-scroll-buttons noink>
+            <paper-tab name="home">Home</paper-tab>
+            <paper-tab-with-submenu title="Info voor leden" selected="{{page}}" attr-for-selected="name" scrollable noink>
+              <paper-subtab name="leiding">Leiding</paper-tab>
+              <paper-subtab name="prikkeling">Prikkeling</paper-tab>
+              <paper-subtab name="nieuwsbrief">Nieuwsbrief</paper-tab>
+              <paper-subtab name="documenten">Documenten</paper-tab>
+            </paper-tab-with-submenu>
+            <paper-tab name="inschrijven">Inschrijven</paper-tab>
+            <paper-tab name="kalender">Kalender</paper-tab>
+            <paper-tab name="fotos">Foto's</paper-tab>
+            <paper-tab name="contact">Contact</paper-tab>
+          </paper-tabs>
+        </template>
+        <template>
+          <paper-tabs selected="0">
+            <paper-tab>ITEM ONE</paper-tab>
+            <paper-tab>ITEM TWO</paper-tab>
+            <paper-tab>ITEM THREE</paper-tab>
+          </paper-tabs>
+        </template>
+      </demo-snippet>
 
       <h3>Plain <code>paper-tabs</code>.</h3>
       <demo-snippet>
