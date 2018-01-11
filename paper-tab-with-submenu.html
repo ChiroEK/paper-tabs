@@ -1,0 +1,198 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-menu-behavior/iron-menubar-behavior.html">
+<link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-styles/color.html">
+<link rel="import" href="paper-tabs-icons.html">
+
+<dom-module id="paper-tab-with-submenu">
+  <template>
+    <style>
+      :host {
+        @apply --layout-inline;
+        @apply --layout-center;
+        @apply --layout-center-justified;
+        @apply --layout-flex-auto;
+
+        /*position: relative;
+        padding: 0 12px;
+        overflow: hidden;
+        cursor: pointer;
+        vertical-align: middle;
+
+        @apply --paper-font-common-base;
+        @apply --paper-tab;*/
+
+      }
+
+      :host-context([dir=rtl]) {
+        @apply --layout-horizontal-reverse;
+      }
+
+      #subTabsContainer {
+        background-color: var(--paper-tabs-background-color);
+        transform: translateY(-100%);
+        z-index: -1;      
+        position: relative;
+      }
+
+      #subTabsContent {
+        height: auto;
+        flex-basis: auto;
+        @apply --layout-vertical;
+      }
+
+      #subTabsContent.scrollable {
+        position: absolute;
+        white-space: nowrap;
+      }
+
+      #subTabsContent:not(.scrollable),
+      #subTabsContent.scrollable.fit-container {
+        @apply --layout-vertical;
+      }
+
+      #subTabsContent.scrollable.fit-container {
+        min-width: 100%;
+      }
+
+      #subTabsContent.scrollable.fit-container > ::slotted(*) {
+        /* IE - prevent tabs from compressing when they should scroll. */
+        -ms-flex: 1 0 auto;
+        -webkit-flex: 1 0 auto;
+        flex: 1 0 auto;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .not-visible {
+        opacity: 0;
+        cursor: default;
+      }
+
+      paper-icon-button {
+        width: 48px;
+        height: 48px;
+        padding: 12px;
+        margin: 0 4px;
+      }
+
+      #submenuContainer:hover  #subTabsContainer{
+        transform: translateY(0);
+        transition: transform 1s;
+      }
+
+      #submenuContainer {
+        height: 100%;
+        padding: 0;
+      }
+
+      #titleWrapper {
+        z-index: 1;
+        position: relative;
+        background-color: black;
+        display: inline-flex;
+        justify-content: center;
+        flex-direction: column;
+        height: 100%;
+      }
+
+      #title {
+        width: calc(100% - 12px);
+        opacity: 0.8;
+        padding: 0 12px;
+      }
+
+      #subTabsContainer {
+        overflow: visible;
+        transition: transform 1s;
+      }
+    </style>
+    <div id="submenuContainer">
+      <div id="titleWrapper">
+        <div id="title">[[title]]</div>
+      </div>
+
+      <div id="subTabsContainer">
+        <div id="subTabsContent">
+          <slot></slot>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'paper-tab-with-submenu',
+
+      behaviors: [
+        Polymer.IronControlState,
+        Polymer.IronButtonState,
+        Polymer.PaperRippleBehavior
+      ],
+
+      properties: {
+
+        /**
+         * If true, the tab will forward keyboard clicks (enter/space) to
+         * the first anchor element found in its descendants
+         */
+        link: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        },
+
+        title: {
+          type: String
+        }
+
+      },
+
+      hostAttributes: {
+        role: 'tab'
+      },
+
+      listeners: {
+        down: '_updateNoink',
+        tap: '_onTap'
+      },
+
+      attached: function() {
+        this._updateNoink();
+      },
+
+      get _parentNoink () {
+        var parent = Polymer.dom(this).parentNode;
+        return !!parent && !!parent.noink;
+      },
+
+      _updateNoink: function() {
+        this.noink = !!this.noink || !!this._parentNoink;
+      },
+
+      _onTap: function(event) {
+        if (this.link) {
+          var anchor = this.queryEffectiveChildren('a');
+
+          if (!anchor) {
+            return;
+          }
+
+          // Don't get stuck in a loop delegating
+          // the listener from the child anchor
+          if (event.target === anchor) {
+            return;
+          }
+
+          anchor.click();
+        }
+      }
+
+    });
+  </script>
+</dom-module>
