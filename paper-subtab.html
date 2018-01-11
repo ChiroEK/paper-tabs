@@ -24,8 +24,8 @@ Custom property | Description | Default
 ----------------|-------------|----------
 `--paper-tab-ink` | Ink color | `--paper-yellow-a100`
 `--paper-tab` | Mixin applied to the tab | `{}`
-`--paper-tab-content` | Mixin applied to the tab content | `{}`
-`--paper-tab-content-unselected` | Mixin applied to the tab content when the tab is not selected | `{}`
+`--paper-subtab-content` | Mixin applied to the tab content | `{}`
+`--paper-subtab-content-unselected` | Mixin applied to the tab content when the tab is not selected | `{}`
 
 This element applies the mixin `--paper-font-common-base` but does not import `paper-styles/typography.html`.
 In order to apply the `Roboto` font to this element, make sure you've imported `paper-styles/typography.html`.
@@ -36,22 +36,14 @@ In order to apply the `Roboto` font to this element, make sure you've imported `
   <template>
     <style>
       :host {
-        @apply --layout-inline;
         @apply --layout-center;
         @apply --layout-center-justified;
-        @apply --layout-flex-auto;
 
         position: relative;
         padding: 0 12px;
-        overflow: hidden;
         cursor: pointer;
         vertical-align: middle;
-
-        float: none;
-        display: block;
-        background: #000;
-        padding: 0 18px;
-        height: 60px;
+        height: 48px;
 
         @apply --paper-font-common-base;
         @apply --paper-tab;
@@ -65,24 +57,20 @@ In order to apply the `Roboto` font to this element, make sure you've imported `
         padding: 0;
       }
 
-      .tab-content {
+      .subtab-content {
         height: 100%;
-        transform: translateZ(0);
-          -webkit-transform: translateZ(0);
         transition: opacity 0.1s cubic-bezier(0.4, 0.0, 1, 1);
         @apply --layout-horizontal;
         @apply --layout-center-center;
         @apply --layout-flex-auto;
-        @apply --paper-tab-content;
       }
 
-      :host(:not(.iron-selected)) > .tab-content {
+      :host(:not(.iron-selected)) > .subtab-content {
         opacity: 0.8;
 
-        @apply --paper-tab-content-unselected;
       }
 
-      :host(:focus) .tab-content {
+      :host(:focus) .subtab-content {
         opacity: 1;
         font-weight: 700;
       }
@@ -91,21 +79,21 @@ In order to apply the `Roboto` font to this element, make sure you've imported `
         color: var(--paper-tab-ink, var(--paper-yellow-a100));
       }
 
-      .tab-content > ::slotted(a) {
+      .subtab-content > ::slotted(a) {
         @apply --layout-flex-auto;
 
         height: 100%;
       }
     </style>
 
-    <div class="tab-content">
+    <div class="subtab-content">
       <slot></slot>
     </div>
   </template>
 
   <script>
     Polymer({
-      is: 'paper-tab',
+      is: 'paper-subtab',
 
       behaviors: [
         Polymer.IronControlState,
